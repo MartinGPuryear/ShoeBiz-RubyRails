@@ -4,6 +4,7 @@
 
   <%= f.input :name, autofocus: true  %>
   <%= f.input :amount  %>
+  <%= f.input :description, as: :text  %>
   <%= f.hidden_field :seller_id %>
   <%= f.button :submit, class: 'btn-primary form-button'  %>
 

@@ -1,19 +1,21 @@
-<h1>Product <%= @product.id %></h1>
+<h1>Product Details: ID <%= @product.id %></h1>
 
 <table class='table table-striped table-hover table-condensed'>
   <thead>
     <th>Name</th>
     <th>Amount</th>
     <th>Seller</th>
-    <th></th>   <!-- Actions -->
+    <th>Action</th>   <!-- Actions -->
   </thead>
   <tbody>
     <tr>
       <td><%= @product.name %></td>
-      <td><%= @product.amount %></td>
+      <td>$<%= "%6.2f" % @product.amount %></td>
       <td><%= @product.seller.first_name + ' ' + @product.seller.last_name %></td>
       <td>
+        <a href='<%= create_sale_path(@product.id) %>' data-method='post'>Buy</a>
 <%  if admin?(@current_user) || (@current_user.id == @product.seller.id)   %>
+         | 
         <a href='<%= edit_product_path(@product.id) %>'>Edit</a>
          | 
         <a data-toggle='modal' href='#deleteModal' product-id='<%= @product.id %>' class='delete-product'>Remove</a>
@@ -22,3 +24,5 @@
     </tr>
   </tbody>
 </table>
+
+<p><%= @product.description %></td></p>

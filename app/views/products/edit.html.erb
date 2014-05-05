@@ -3,9 +3,10 @@
 <%= simple_form_for(@product, html: {class: 'form-vertical' }) do |f| %>
   <%= f.input :name, autofocus: true %>
   <%= f.input :amount %>
+  <%= f.input :description, as: :text %>
   <%= f.hidden_field :seller_id %>
   <%= f.button :submit, class: 'btn-primary form-button' %>
   <div>
-    <%= link_to "Return to previous view", product_path(@product.id) %>
+    <%= link_to "Return to previous view", products_path %>
   </div>
 <% end %>

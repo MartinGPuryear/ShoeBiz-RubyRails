@@ -1,6 +1,6 @@
-<h1>Products</h1>
+<%  if @avail_products.length > 0 %>
 
-<%  if @products.length > 0 %>
+<h1>Products For Sale</h1>
 
 <table class='table table-striped table-hover table-condensed'>
   <thead>
@@ -11,20 +11,16 @@
     <th>Action</th>
   </thead>
   <tbody>
-<%    @products.each{ | product | %>
+<%    @avail_products.each{ | product | %>
     <tr>
       <td><%= product.name %></td>
       <td><%= product.seller.first_name + ' ' + product.seller.last_name %></td>
-      <td><%= product.created_at %></td>
-      <td><%= product.amount %></td>
+      <td><%= product.created_at.strftime("%b %d, %Y") %></td>
+      <td>$<%= "%6.2f" % product.amount %></td>
       <td>
-		<a href="/buy/<%= product.id %>" data-method='post'>Buy</a>
-          <!-- <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' /> -->
-          <!-- <input name='_method' type='hidden' value='delete' /> -->
-<!--           <input type='submit' class='btn btn-danger' value='Remove' />
-        </form>
- -->
-        <a href='<%= product_path(product.id) %>'>Show</a>
+		<a href='<%= create_sale_path(product.id) %>' data-method='post'>Buy</a>
+         | 
+        <a href='<%= product_path(product.id) %>'>Details</a>
 <%      if admin?(@current_user) || (@current_user.id == product.seller.id)   %>
          | 
         <a href='<%= edit_product_path(product.id) %>'>Edit</a>
@@ -37,6 +33,44 @@
   </tbody>
 </table>
 
+<p class='text-right'>
+	Total value of these offerings: <strong>$<%= "%6.2f" % @avail_products.reduce(0){|sum, purchase| sum+purchase.amount } %></strong>
+</p>
+
 <%  end %>
 
-<a href='<%= new_product_path %>'>New Product</a>
+<%  if @sold_products.length > 0 %>
+
+<h1>Previously Sold Products</h1>
+
+<table class='table table-striped table-hover table-condensed'>
+  <thead>
+    <th>Product</th><th>Seller</th><th>Date Posted</th><th>Buyer</th><th>Date Bought</th><th>Amount</th>
+    <th><% if admin?(@current_user) %>Action<% end %></th>
+  </thead>
+  <tbody>
+<%    @sold_products.each{ | product | %>
+    <tr>
+      <td><%= product.name %></td>
+      <td><%= product.seller.first_name + ' ' + product.seller.last_name %></td>
+      <td><%= product.created_at.strftime("%b %d, %Y") %></td>
+      <td><%= product.sale.buyer.first_name + ' ' + product.sale.buyer.last_name %></td>
+      <td><%= product.sale.created_at.strftime("%b %d, %Y") %></td>
+      <td>$<%= "%6.2f" % product.amount %></td>
+      <td>
+<%      if admin?(@current_user) || (@current_user.id == product.seller.id) || (@current_user.id == product.sale.buyer.id)   %>
+        <a data-toggle='modal' href='#deleteModal' sale-id='<%= product.sale.id %>' class='delete-sale'>Cancel Sale</a>
+<%      end   %>
+      </td>
+    </tr>
+<%    } %>
+  </tbody>
+</table>
+
+<p class='text-right'>
+	Total amount spent on these purchases: <strong>$<%= "%6.2f" % @sold_products.reduce(0){|sum, purchase| sum+purchase.amount } %></strong>
+</p>
+
+<%  end %>
+
+<a href='<%= new_product_path %>'>Sell a Product</a>

@@ -1,25 +1,29 @@
-<h1>Sales</h1>
+<h1>All Sales</h1>
 
 <%  if @sales.length > 0 %>
 
 <table class='table table-striped table-hover table-condensed'>
   <thead>
     <th>Product</th>
+    <th>Date Offered</th>
+    <th>Seller</th>
+    <th>Amount</th>
     <th>Date Bought</th>
     <th>Buyer</th>
-    <th>Amount</th>
-    <th>Action</th>
+    <th><% if admin?(@current_user) %>Action<% end %></th>
   </thead>
   <tbody>
 <%    @sales.each{ | sale | %>
     <tr>
       <td><%= sale.product.name %></td>
-      <td><%= sale.created_at %></td>
+      <td><%= sale.product.created_at.strftime("%b %d, %Y") %></td>
+      <td><%= sale.product.seller.first_name + ' ' + sale.product.seller.last_name %></td>
+      <td>$<%= "%6.2f" % sale.product.amount %></td>
+      <td><%= sale.created_at.strftime("%b %d, %Y") %></td>
       <td><%= sale.buyer.first_name + ' ' + sale.buyer.last_name %></td>
-      <td><%= sale.product.amount %></td>
       <td>
 <%      if admin?(@current_user)  || (@current_user.id == sale.buyer.id) || (@current_user.id == sale.product.seller_id) %>
-        <a data-toggle='modal' href='#deleteModal' sale-id='<%= sale.id %>' class='delete-sale'>Remove</a>
+        <a data-toggle='modal' href='#deleteModal' sale-id='<%= sale.id %>' class='delete-sale'>Cancel Sale</a>
 <%      end   %>
       </td>
     </tr>
@@ -27,4 +31,10 @@
   </tbody>
 </table>
 
+<p class='text-right'>
+  Total amount sold: <strong>$<%= "%6.2f" % @sales.reduce(0){|sum, s| sum+s.product.amount } %></strong>
+</p>
+
+<%  else %>
+  <p>None</p>
 <%  end %>

@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     else
       @user = User.select(:id, :first_name, :last_name, :email, :created_at).find(user.id)
       sign_in @user
-      redirect_to @user, notice: 'User was successfully created.'
+      redirect_to user_path(@user.id), notice: 'User was successfully created.'
     end
   end
 
@@ -32,8 +32,12 @@ class UsersController < ApplicationController
     @user = User.select(:id, :first_name, :last_name, :email, :created_at).find(params[:id])
     current_user
 
-    # @product = Product.new
-    # @sale = Sale.new
+    @product = Product.new(seller_id: @user.id)
+    
+    my_prods = Product.all.where(seller_id: @user.id)
+    @sales = my_prods.reject{|p| p.sale.nil? }
+    @offers = my_prods - @sales
+    @purchases = Sale.all.where(buyer_id: @user.id).collect{|s| s.product}
 
   end
 

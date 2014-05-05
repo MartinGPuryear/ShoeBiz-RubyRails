@@ -1,22 +1,119 @@
-<h1>User <%= @user.id %></h1>
+<h2><%= @user.first_name %>'s Dashboard</h1>
+
+<h3>Sell a new product?</h3>
+<%=   simple_form_for(@product, html: {class: 'form-horizontal' }) do |f|  %>
+
+  <%= f.input :name, autofocus: true  %>
+  <%= f.input :amount  %>
+  <%= f.input :description, as: :text %>
+  <%= f.hidden_field :seller_id %>
+  <%= f.button :submit, class: 'btn-primary form-button'  %>
+
+<%  end   %>
+
+<h3>Your products that are not yet sold:</h3>
+<%  if @offers.length > 0 %>
+<table class='table table-striped table-hover table-condensed'>
+  <thead>
+    <th>Product</th>
+    <th>Date Posted</th>
+    <th>Amount</th>
+    <th>Action</th>
+  </thead>
+  <tbody>
+<%  @offers.each{|offer| %>
+    <tr>
+      <td><%= offer.name %></td>
+      <td><%= offer.created_at.strftime("%b %d, %Y") %></td>
+      <td>$<%= "%6.2f" % offer.amount %></td>
+      <td>
+        <a href='<%= edit_product_path(offer.id) %>'>Edit</a>
+         | 
+        <a data-toggle='modal' href='#deleteModal' product-id='<%= offer.id %>' class='delete-product'>Remove</a>
+      </td>
+    </tr>
+<%  }   %>
+  </tbody>
+</table>
+
+<p class='text-right'>
+  Total value of these offers: <strong>$<%= "%6.2f" % @offers.reduce(0){|sum, offer| sum+offer.amount } %></strong>
+</p>
+
+<%  else %>
+  <p>None</p>
+<%  end   %>
+
+<h3>Sales:</h3>
+<%  if @sales.length > 0 %>
+<table class='table table-striped table-hover table-condensed'>
+  <thead>
+    <th>Product</th>
+    <th>Date Bought</th>
+    <th>Buyer</th>
+    <th>Amount</th>
+    <th>Action</th>
+  </thead>
+  <tbody>
+
+<%  @sales.each{|item| %>
+    <tr>
+      <td><%= item.name %></td>
+      <td><%= item.created_at.strftime("%b %d, %Y") %></td>
+      <td><%= item.sale.buyer.first_name + ' ' + item.sale.buyer.last_name %></td>
+      <td>$<%= "%6.2f" % item.amount %></td>
+      <td>
+        <a href='<%= edit_product_path(item.id) %>'>Edit Product</a>
+         | 
+        <a data-toggle='modal' href='#deleteModal' sale-id='<%= item.sale.id %>' class='delete-sale'>Cancel Sale</a>
+      </td>
+    </tr>
+<%  }   %>
+
+  </tbody>
+</table>
+
+<p class='text-right'>
+  Total value of these sales: <strong>$<%= "%6.2f" % @sales.reduce(0){|sum, sale| sum+sale.amount } %></strong>
+</p>
+
+<%  else %>
+  <p>None</p>
+<%  end   %>
+
+<h3>Purchases:</h3>
+<%  if @purchases.length > 0 %>
 
 <table class='table table-striped table-hover table-condensed'>
   <thead>
-    <th>First Name</th>
-    <th>Last Name</th>
-    <th>Email</th>
-    <th></th>   <!-- Actions -->
+    <th>Product</th>
+    <th>Date Bought</th>
+    <th>Seller</th>
+    <th>Amount</th>
+    <th>Action</th>
   </thead>
   <tbody>
+
+<%  @purchases.each{|purchase| %>
     <tr>
-      <td><%= @user.first_name %></td>
-      <td><%= @user.last_name %></td>
-      <td><%= @user.email %></td>
+      <td><%= purchase.name %></td>
+      <td><%= purchase.created_at.strftime("%b %d, %Y") %></td>
+      <td><%= purchase.seller.first_name + ' ' + purchase.seller.last_name %></td>
+      <td>$<%= "%6.2f" % purchase.amount %></td>
       <td>
-        <a href='<%= edit_user_path(@user.id) %>'>Edit</a>
-         | 
-        <a data-toggle='modal' href='#deleteModal' user-id='<%= @user.id %>' class='delete-user'>Remove</a>
+        <a data-toggle='modal' href='#deleteModal' sale-id='<%= purchase.sale.id %>' class='delete-sale'>Cancel Purchase</a>
       </td>
     </tr>
+<%  }   %>
+
   </tbody>
 </table>
+
+<p class='text-right'>
+  Total amount spent on these purchases: <strong>$<%= "%6.2f" % @purchases.reduce(0){|sum, purchase| sum+purchase.amount } %></strong>
+</p>
+
+<%  else %>
+  <p>None</p>
+<%  end   %>
+
