@@ -1,0 +1,10 @@
+<h1>New Product Offering</h1>
+
+<%=   simple_form_for(@product, html: {class: 'form-horizontal' }) do |f|  %>
+
+  <%= f.input :name, autofocus: true  %>
+  <%= f.input :amount  %>
+  <%= f.hidden_field :seller_id %>
+  <%= f.button :submit, class: 'btn-primary form-button'  %>
+
+<%  end   %>

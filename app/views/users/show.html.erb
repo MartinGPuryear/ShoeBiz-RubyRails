@@ -1,0 +1,22 @@
+<h1>User <%= @user.id %></h1>
+
+<table class='table table-striped table-hover table-condensed'>
+  <thead>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Email</th>
+    <th></th>   <!-- Actions -->
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @user.first_name %></td>
+      <td><%= @user.last_name %></td>
+      <td><%= @user.email %></td>
+      <td>
+        <a href='<%= edit_user_path(@user.id) %>'>Edit</a>
+         | 
+        <a data-toggle='modal' href='#deleteModal' user-id='<%= @user.id %>' class='delete-user'>Remove</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

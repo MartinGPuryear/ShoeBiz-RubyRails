@@ -1,0 +1,42 @@
+<h1>Products</h1>
+
+<%  if @products.length > 0 %>
+
+<table class='table table-striped table-hover table-condensed'>
+  <thead>
+    <th>Product</th>
+    <th>Seller</th>
+    <th>Date Posted</th>
+    <th>Amount</th>
+    <th>Action</th>
+  </thead>
+  <tbody>
+<%    @products.each{ | product | %>
+    <tr>
+      <td><%= product.name %></td>
+      <td><%= product.seller.first_name + ' ' + product.seller.last_name %></td>
+      <td><%= product.created_at %></td>
+      <td><%= product.amount %></td>
+      <td>
+		<a href="/buy/<%= product.id %>" data-method='post'>Buy</a>
+          <!-- <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' /> -->
+          <!-- <input name='_method' type='hidden' value='delete' /> -->
+<!--           <input type='submit' class='btn btn-danger' value='Remove' />
+        </form>
+ -->
+        <a href='<%= product_path(product.id) %>'>Show</a>
+<%      if admin?(@current_user) || (@current_user.id == product.seller.id)   %>
+         | 
+        <a href='<%= edit_product_path(product.id) %>'>Edit</a>
+         | 
+        <a data-toggle='modal' href='#deleteModal' product-id='<%= product.id %>' class='delete-product'>Remove</a>
+<%      end   %>
+      </td>
+    </tr>
+<%    } %>
+  </tbody>
+</table>
+
+<%  end %>
+
+<a href='<%= new_product_path %>'>New Product</a>

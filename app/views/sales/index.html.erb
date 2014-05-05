@@ -1,0 +1,30 @@
+<h1>Sales</h1>
+
+<%  if @sales.length > 0 %>
+
+<table class='table table-striped table-hover table-condensed'>
+  <thead>
+    <th>Product</th>
+    <th>Date Bought</th>
+    <th>Buyer</th>
+    <th>Amount</th>
+    <th>Action</th>
+  </thead>
+  <tbody>
+<%    @sales.each{ | sale | %>
+    <tr>
+      <td><%= sale.product.name %></td>
+      <td><%= sale.created_at %></td>
+      <td><%= sale.buyer.first_name + ' ' + sale.buyer.last_name %></td>
+      <td><%= sale.product.amount %></td>
+      <td>
+<%      if admin?(@current_user)  || (@current_user.id == sale.buyer.id) || (@current_user.id == sale.product.seller_id) %>
+        <a data-toggle='modal' href='#deleteModal' sale-id='<%= sale.id %>' class='delete-sale'>Remove</a>
+<%      end   %>
+      </td>
+    </tr>
+<%    } %>
+  </tbody>
+</table>
+
+<%  end %>

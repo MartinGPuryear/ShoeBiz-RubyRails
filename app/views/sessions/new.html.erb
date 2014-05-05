@@ -1,0 +1,7 @@
+<h1>Sign In</h1>
+
+<%= simple_form_for(:session, url: sessions_path, html: {class: 'form-horizontal' }) do |f| %>
+  <%= f.input :email, autofocus: true %>
+  <%= f.input :password %>
+  <%= f.button :submit, class: 'btn btn-primary form-button' %>
+<% end %>
