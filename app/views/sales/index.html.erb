@@ -1,4 +1,17 @@
-<h1>All Sales</h1>
+<!-- 
+  Display the list of all sales - item, seller and date offered, 
+  amount, buyer and date bought.  
+
+  Also, if the current user was either buyer or seller for this 
+  sale (or if the current user is a system admin), include a
+  link to cancel this sale (unlikely in the real world).     
+  
+  The 'Cancel Sale' link invokes a modal dialog, to confirm that
+  this is really the user's intent.  This same dialog is used when 
+  deleting a product, a successful purchase, or a user.  
+ -->
+ 
+ <h2>Previous Sales</h2>
 
 <%  if @sales.length > 0 %>
 

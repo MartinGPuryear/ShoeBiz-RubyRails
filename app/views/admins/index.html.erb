@@ -1,0 +1,70 @@
+<!-- 
+  Display the list of users in admin/current user style, for use
+  by system administrators.  This allows the admin to designate
+  other users as admins, or to demote admins to standard user
+  status.  
+ -->
+
+<h2>Admins</h2>
+
+<%  if admin?(@current_user)  %>
+  <a href='<%= users_path %>'>Back to All Users</a> | 
+  <a href='<%= new_user_path %>'>Create New User</a>
+<%  end  %>
+
+<%  if @admin_users.length > 0 %>
+  <table class='table table-striped table-hover table-condensed'>
+    <thead>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </thead>
+    <tbody>
+    <%  @admin_users.each{ | admin | %>
+      <tr>
+        <td><%= admin.first_name %></td>
+        <td><%= admin.last_name %></td>
+        <td><%= admin.email %></td>
+        <td>
+      <%  if admin?(@current_user)  %>
+          <a href='<%= admin_path(admin.id) %>' data-method='delete'>Demote</a>
+      <%  end   %>
+        </td>
+      </tr>
+    <%  } %>
+    </tbody>
+  </table>
+<%  else %>
+  <p>None</p>
+<%  end %>
+
+<h2>Standard Users</h2>
+
+<%  if @users.length > 0 %>
+  <table class='table table-striped table-hover table-condensed'>
+    <thead>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </thead>
+    <tbody>
+    <%  @users.each{ | user | %>
+      <tr>
+        <td><%= user.first_name %></td>
+        <td><%= user.last_name %></td>
+        <td><%= user.email %></td>
+        <td>
+      <%  if admin?(@current_user)  %>
+          <a href='<%= create_admin_path(user.id) %>' data-method='post'>Promote</a>
+      <%  end   %>
+        </td>
+      </tr>
+    <%  } %>
+    </tbody>
+  </table>
+<%  else %>
+  <p>None</p>
+<%  end %>
+

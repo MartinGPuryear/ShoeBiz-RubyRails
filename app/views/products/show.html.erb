@@ -1,4 +1,20 @@
-<h1>Product Details: ID <%= @product.id %></h1>
+<!-- 
+  Display details about an item for sale - name, amount, seller,
+  description, and links to Buy the item.  Note that all items 
+  are open for viewing by all users. 
+
+  Also if the current user is the seller (or an admin), present
+  links to edit or remove the item.   
+  
+  The 'Remove Product'  link is defended by a modal dialog, to 
+  confirm that this is really the user's intent.  It is the same
+  dialog as used when deleting a sale/purchase (or when an admin 
+  removes a user).  
+ -->
+
+<h2>Product Details: ID <%= @product.id %></h2>
+
+<%= link_to "Back to All Products", products_path %>
 
 <table class='table table-striped table-hover table-condensed'>
   <thead>

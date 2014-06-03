@@ -1,5 +1,21 @@
 class SessionsController < ApplicationController
 
+  #   Manages the signin/signout process for already-registered users.
+  #   Only :new, :create and :destroy are used.  
+  # 
+  #   Note that the Session object is not backed by a model.  
+  #   Possible future features: (index) listing those currently signed-in, 
+  #   (show) details about a session, or (edit/update) changing aspects
+  #   of a login session while it is active.  
+
+  #   SessionsHelper provides numerous companion functions for tracking
+  #   the current user, creating a subset of the User object that is 
+  #   passable to views (e.g. without password and salt). Also contains
+  #   functions for checking if session is signed-in, whether current user 
+  #   is admin, or whether user "owns" the user-specific views requested. 
+
+  before_action :require_signin, only: [:destroy]
+
   def new
   end
   

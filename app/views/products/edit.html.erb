@@ -1,11 +1,17 @@
-<h1>Edit Product</h1>
+<!-- 
+  simple_form view to edit product details. 
+ -->
+
+<h3>Edit Product Details: ID <%= @product.id %></h3>
+
+<%= link_to "Back to All Products", products_path %>
 
 <%= simple_form_for(@product, html: {class: 'form-vertical' }) do |f| %>
   <%= f.input :name, autofocus: true %>
-  <%= f.input :amount %>
-  <%= f.input :description, as: :text %>
+  <%= f.input :amount, input_html: {value: number_with_precision(f.object.amount, precision: 2) } %>
+  <%= f.input :description, as: :text, input_html: { class: 'form-control', rows: 4 }  %>
   <%= f.hidden_field :seller_id %>
-  <%= f.button :submit, class: 'btn-primary form-button' %>
+  <%= f.button :submit, 'Update', class: 'btn-primary form-button' %>
   <div>
     <%= link_to "Return to previous view", products_path %>
   </div>

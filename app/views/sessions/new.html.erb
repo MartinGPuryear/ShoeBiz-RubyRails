@@ -1,7 +1,12 @@
-<h1>Sign In</h1>
+<!-- 
+  simple_form view to create a new session - i.e. to Sign In
+  an existing (returning) user. 
+ -->
+ 
+<h2>Returning User</h2>
 
 <%= simple_form_for(:session, url: sessions_path, html: {class: 'form-horizontal' }) do |f| %>
   <%= f.input :email, autofocus: true %>
   <%= f.input :password %>
-  <%= f.button :submit, class: 'btn btn-primary form-button' %>
+  <%= f.button :submit, 'Sign In', class: 'btn btn-primary form-button' %>
 <% end %>

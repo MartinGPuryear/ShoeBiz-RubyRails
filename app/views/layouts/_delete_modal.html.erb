@@ -1,19 +1,65 @@
+<!-- 
+  This is the modal dialog that is used when deleting records - 
+  users, products, sales.  Because so much code is common
+  between these cases, a click handler catches which type of 
+  deletion, and customizes the action and certain dialog text.  
+  This is a standard Bootstrap modal.   
+ -->
+
+<script type="text/javascript">
+  $(document).ready(function()
+  { 
+    $('body').on('click', '.delete-user', function()
+    {
+      var user_id = $(this).attr('user-id');
+      $('.modal-header .modal-title').html("Remove a User");
+      $('#modal-action-btn').val("Remove the User");
+      $('#modal-form').attr('action', '/users/' + user_id);
+    });
+
+    $('body').on('click', '.delete-product', function()
+    {
+      var product_id = $(this).attr('product-id');
+      $('.modal-header .modal-title').html("Remove a Product");
+      $('#modal-action-btn').val("Remove the Product");
+      $('#modal-form').attr('action', '/products/' + product_id);
+    });
+
+    $('body').on('click', '.delete-sale', function()
+    {
+      var sale_id = $(this).attr('sale-id');
+      $('.modal-header .modal-title').html("Cancel a Sale");
+      $('#modal-action-btn').val("Cancel the Sale");
+      $('#modal-form').attr('action', '/sales/' + sale_id);
+    });
+    
+    $('body').on('click', '.delete-purchase', function()
+    {
+      var sale_id = $(this).attr('sale-id');
+      $('.modal-header .modal-title').html("Cancel a Purchase");
+      $('#modal-action-btn').val("Cancel the Purchase");
+      $('#modal-form').attr('action', '/sales/' + sale_id);
+    });
+    
+  }); 
+</script>
+
 <div class='modal fade' id='deleteModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
   <div class='modal-dialog'>
     <div class='modal-content'>
       <div class='modal-header'>
         <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
-        <h4 class='modal-title'>Remove User</h4>
+        <h4 class='modal-title'></h4>
       </div>
       <div class='modal-body'>
-        <h4 class='modal-title'>Are you sure you want to remove this record?  This operation is not reversible.</h4>
+        <h4 class='modal-title'>Are you sure you want to do this?  This operation is not reversible.</h4>
       </div>
       <div class='modal-footer'>
         <form action='/' method='post' id='modal-form'>
-          <a href='#' class='btn btn-success' data-dismiss='modal'>Cancel</a>
+          <a href='#' class='btn btn-success' data-dismiss='modal'>No Change</a>
           <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' />
           <input name='_method' type='hidden' value='delete' />
-          <input type='submit' class='btn btn-danger' value='Remove' />
+          <input type='submit' class='btn btn-danger' id='modal-action-btn' value='' />
         </form>
       </div>
     </div>

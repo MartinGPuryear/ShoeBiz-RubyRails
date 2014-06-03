@@ -1,5 +1,17 @@
+<!-- 
+  Nav bar accomodates sscreen sizes smaller than 768px
+  across by collapsing into a 'burger' menu.  
+
+  Also, the right-side content changes when users sign
+  in, to offer 'Edit Profile' and 'Sign Out' instead of 
+  'Sign Up' and 'Sign In'.    
+
+  Similarly, the main nav links are pulled in from a
+  navigation_links file - and are only shown if the 
+  session is signed-in.    
+ -->
+
 <%# navigation styled for Bootstrap 3.0 %>
-<!-- <nav class="navbar navbar-fixed-top"> -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
@@ -9,7 +21,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to 'Shoe Bonanza', root_path, class: 'navbar-brand' %>
+      <%= link_to 'Shoe Biz', root_path, class: 'navbar-brand' %>
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
@@ -17,9 +29,9 @@
       </ul>
       <p class="navbar-text pull-right">
 <% if signed_in? %>
-        Welcome <strong><%= link_to current_user.first_name, user_path(current_user.id), class: 'navbar-link' %></strong>! 
+        Welcome <strong><%= current_user.first_name %></strong>!
          |
-        <%= link_to 'Edit profile', edit_user_path(current_user.id), class: 'navbar-link' %>
+        <%= link_to 'Edit Profile', edit_user_path(current_user.id), class: 'navbar-link' %>
          |
         <%= link_to "Sign Out", session_path(current_user.id), method: :delete, :class => 'navbar-link'  %>
 <% else %>

@@ -1,11 +1,15 @@
-<h1>New Product Offering</h1>
+<!-- 
+  simple_form view to create a new product for sale. 
+ -->
+ 
+<h2>Register a Product For Sale</h2>
+
+<%= link_to "Back to All Products", products_path %>
 
 <%=   simple_form_for(@product, html: {class: 'form-horizontal' }) do |f|  %>
-
   <%= f.input :name, autofocus: true  %>
   <%= f.input :amount  %>
-  <%= f.input :description, as: :text  %>
+  <%= f.input :description, as: :text, input_html: { class: 'form-control', rows: 4 }  %>
   <%= f.hidden_field :seller_id %>
-  <%= f.button :submit, class: 'btn-primary form-button'  %>
-
+  <%= f.button :submit, 'Sell', class: 'btn-primary form-button'  %>
 <%  end   %>
