@@ -27,27 +27,25 @@
       <th>Action</th>
     </thead>
     <tbody>
-    <%    @avail_products.each{ | product | %>
+
+  <%    @avail_products.each{ | product | %>
       <tr>
-        <td><%= product.name %></td>
-        <td><%= product.seller.first_name + ' ' + product.seller.last_name %></td>
+        <td><a href='<%= product_path(product.id) %>'><%= product.name %></a></td>
+        <td><a href='<%= user_path(product.seller.id) %>'><%= product.seller.first_name + ' ' + product.seller.last_name %></a></td>
         <td><%= product.created_at.strftime("%b %d, %Y") %></td>
         <td>$<%= "%6.2f" % product.amount %></td>
         <td>
-      <a href='<%= create_sale_path(product.id) %>' data-method='post'>Buy</a>
-           | 
-          <a href='<%= product_path(product.id) %>'>Details</a>
-
-    <%      if admin?(@current_user) || (@current_user.id == product.seller.id)   %>
+          <a href='<%= create_sale_path(product.id) %>' data-method='post'>Buy</a>
+    <%  if admin?(@current_user) || (@current_user.id == product.seller.id)   %>
            | 
           <a href='<%= edit_product_path(product.id) %>'>Edit</a>
            | 
           <a data-toggle='modal' href='#deleteModal' product-id='<%= product.id %>' class='delete-product'>Remove</a>
-    <%      end   %>
-    
+    <%  end   %>
         </td>
       </tr>
-    <%    } %>
+  <%    } %>
+    
     </tbody>
   </table>
 
