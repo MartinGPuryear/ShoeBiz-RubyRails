@@ -23,7 +23,7 @@ public
 
   #   Retrieve (a safe subset of) the currently signed-in user.
   def current_user
-    @current_user ||= User.select(:id, :first_name, :last_name, :email, :created_at).find(session[:user_id]) if session[:user_id]
+    @current_user ||= User.includes(:admin).select(:id, :first_name, :last_name, :email, :created_at).find(session[:user_id]) if session[:user_id]
   end
 
   #   Is the current session signed in yet?  

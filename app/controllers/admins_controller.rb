@@ -16,7 +16,7 @@ class AdminsController < ApplicationController
   before_action :require_user_exists, only: [:create]
 
   def index
-    @admin_users = Admin.all.map{ |a| a.admin_user }
+    @admin_users = User.joins(:admin)
     @users = User.all - @admin_users
   end
 

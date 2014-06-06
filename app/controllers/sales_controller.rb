@@ -27,7 +27,8 @@ class SalesController < ApplicationController
   before_action :require_product_exists, only: [:create]
 
   def index
-    @sales = Sale.all
+    @sales = Sale.get_combined_sales
+    @sum = "$%6.2f" % @sales.reduce(0){|sum, sale| sum + sale.prod_amt }
   end
 
   def create

@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   def index
     current_user
 
-    @users = User.select(:id, :first_name, :last_name, :email, :created_at).all
+    @users = User.includes(:admin).select(:id, :first_name, :last_name, :email, :created_at).all
   end
 
   def new
@@ -52,17 +52,22 @@ class UsersController < ApplicationController
   end
 
   def show
+
     if !user_exists?(params[:id])
       deny_user_not_found
-      # return
     else
       @user = User.select(:id, :first_name, :last_name, :email, :created_at).find(params[:id])
       current_user
       
-      my_prods = Product.all.where(seller_id: @user.id)
-      @sales = my_prods.reject{|p| p.sale.nil? }
-      @offers = my_prods - @sales
-      @purchases = Sale.all.where(buyer_id: @user.id).collect{|s| s.product}
+      @offers = Product.get_offers_by_user(@user.id)
+      @offers_sum = "$%6.2f" % @offers.reduce(0){|sum, offer| sum + offer.amount }
+
+
+      @sales = Sale.get_sales_by_user(@user.id)
+      @sales_sum = "$%6.2f" % @sales.reduce(0){|sum, sale| sum + sale.prod_amt }
+      
+      @purchases = Product.get_purchases_by_user(@user.id)
+      @purch_sum = "$%6.2f" % @purchases.reduce(0){|sum, purchase| sum + purchase.prod_amt }
     end
   end
 

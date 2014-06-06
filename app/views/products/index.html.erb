@@ -22,7 +22,7 @@
     <thead>
       <th>Product</th>
       <th>Seller</th>
-      <th>Date Posted</th>
+      <th>Posted</th>
       <th>Amount</th>
       <th>Action</th>
     </thead>
@@ -32,8 +32,8 @@
       <tr>
         <td><a href='<%= product_path(product.id) %>'><%= product.name %></a></td>
         <td><a href='<%= user_path(product.seller.id) %>'><%= product.seller.first_name + ' ' + product.seller.last_name %></a></td>
-        <td><%= product.created_at.strftime("%b %d, %Y") %></td>
-        <td>$<%= "%6.2f" % product.amount %></td>
+        <td><%= l(product.created_at, format: :notime) %></td>
+        <td><%= "$%6.2f" % product.amount %></td>
         <td>
           <a href='<%= create_sale_path(product.id) %>' data-method='post'>Buy</a>
     <%  if admin?(@current_user) || (@current_user.id == product.seller.id)   %>
@@ -50,7 +50,7 @@
   </table>
 
   <p class='text-right'>
-    Total value of these offerings: <strong>$<%= "%6.2f" % @avail_products.reduce(0){|sum, purchase| sum+purchase.amount } %></strong>
+    Total value of these offerings: <strong><%= @prod_sum %></strong>
   </p>
 
 <% else %>

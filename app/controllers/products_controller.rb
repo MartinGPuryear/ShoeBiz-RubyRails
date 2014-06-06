@@ -10,8 +10,8 @@ class ProductsController < ApplicationController
   before_action :require_product_exists, only: [:show, :edit, :update, :destroy]
 
   def index
-    @sold_products = Sale.all.collect{|s|s.product}
-    @avail_products = Product.all - @sold_products
+    @avail_products = Product.includes(:sale, :seller).where(sales: {product_id: nil})
+    @prod_sum = "$%6.2f" % @avail_products.reduce(0){ |sum, purchase| sum+purchase.amount }
   end
 
   def new
@@ -19,7 +19,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find(params[:id])
+    @product = Product.get_product_by_id(params[:id])
   end
 
   def edit
